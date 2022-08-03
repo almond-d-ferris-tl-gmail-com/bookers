@@ -33,71 +33,31 @@
   </thead>
 
   <tbody>
+    <% @books.each do |book| %>
       <tr>
-        <td><%= @book.title %></td>
-        <td><%= @book.body %>
-        <td><%= link_to "Show", book_path(@book.id) %></td>
-        <td><%= link_to "Edit", edit_book_path(@book.id) %></td>
-        <td><%= link_to "Destroy", book_path(@book.id), method: :delete, "data-confirm" => "Are you sure?" %></td>
+        <td><%= book.title %></td>
+        <td><%= book.body %>
+        <td><%= link_to "Show", book_path(book.id) %></td>
+        <td><%= link_to "Edit", edit_book_path(book.id) %></td>
+        <td><%= link_to "Destroy", book_path(book.id), method: :delete, "data-confirm" => "Are you sure?" %></td>
       </tr>
-
-        <!--<td>リーダブルコード</td>-->
-        <!--<td>より良いコードを書くためのシンプルで実践的なテクニック</td>-->
-        <!--<td><a class="show_1" href="/books/1">Show</a></td>-->
-        <!--<td><a class="edit_1" href="/books/1/edit">Edit</a></td>-->
-        <!--<td><a data-confirm="Are you sure?" class="destroy_1" rel="nofollow" data-method="delete" href="/books/1">Destroy</a></td>-->
-
-
-      <!--<tr>-->
-      <!--  <td>トラブル知らずのシステム設計</td>-->
-      <!--  <td>システム設計の要点を図解で説明してくれます</td>-->
-      <!--  <td><a class="show_88854" href="/books/88854">Show</a></td>-->
-      <!--  <td><a class="edit_88854" href="/books/88854/edit">Edit</a></td>-->
-      <!--  <td><a data-confirm="Are you sure?" class="destroy_88854" rel="nofollow" data-method="delete" href="/books/88854">Destroy</a></td>-->
-      <!--</tr>-->
-
-      <!--<tr>-->
-      <!--  <td>たのしいRuby</td>-->
-      <!--  <td>Rubyの入門におすすめです</td>-->
-      <!--  <td><a class="show_88855" href="/books/88855">Show</a></td>-->
-      <!--  <td><a class="edit_88855" href="/books/88855/edit">Edit</a></td>-->
-      <!--  <td><a data-confirm="Are you sure?" class="destroy_88855" rel="nofollow" data-method="delete" href="/books/88855">Destroy</a></td>-->
-      <!--</tr>-->
-      <!--<tr>-->
-      <!--  <td>入門Git</td>-->
-      <!--  <td>gitについての基本操作から内部構造まで解説してくれます</td>-->
-      <!--  <td><a class="show_88856" href="/books/88856">Show</a></td>-->
-      <!--  <td><a class="edit_88856" href="/books/88856/edit">Edit</a></td>-->
-      <!--  <td><a data-confirm="Are you sure?" class="destroy_88856" rel="nofollow" data-method="delete" href="/books/88856">Destroy</a></td>-->
-      <!--</tr>-->
-      <!--<tr>-->
-      <!--  <td>アルゴリズム図鑑</td>-->
-      <!--  <td>アルゴリズムについてカラーイラストでしっかり解説してくれます</td>-->
-      <!--  <td><a class="show_88857" href="/books/88857">Show</a></td>-->
-      <!--  <td><a class="edit_88857" href="/books/88857/edit">Edit</a></td>-->
-      <!--  <td><a data-confirm="Are you sure?" class="destroy_88857" rel="nofollow" data-method="delete" href="/books/88857">Destroy</a></td>-->
-      <!--</tr>-->
-      <!--<tr>-->
-      <!--  <td>達人プログラマー</td>-->
-      <!--  <td>プログラマ入門者は必読！</td>-->
-      <!--  <td><a class="show_88858" href="/books/88858">Show</a></td>-->
-      <!--  <td><a class="edit_88858" href="/books/88858/edit">Edit</a></td>-->
-      <!--  <td><a data-confirm="Are you sure?" class="destroy_88858" rel="nofollow" data-method="delete" href="/books/88858">Destroy</a></td>-->
-      <!--</tr>-->
-      <!--<tr>-->
-      <!--  <td>データベース実践入門</td>-->
-      <!--  <td>効率的なSQL文を教えてくれます</td>-->
-      <!--  <td><a class="show_88859" href="/books/88859">Show</a></td>-->
-      <!--  <td><a class="edit_88859" href="/books/88859/edit">Edit</a></td>-->
-      <!--  <td><a data-confirm="Are you sure?" class="destroy_88859" rel="nofollow" data-method="delete" href="/books/88859">Destroy</a></td>-->
-      <!--</tr>-->
+    <% end %>
   </tbody>
 </table>
 
 
 <h2>New book</h2>
-<form class="new_book" id="new_book" action="/books" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="✓"><input type="hidden" name="authenticity_token" value="lPKlN0ipjuZHTsCA8l1kswe4LXaMTvznoclk6uN4QG3K1oDfCns744JGhGN0Zv/hUpih1yGh3wYO1zRn2PRZ0g==">
 
+<% if @book.errors.any? %>
+  <%= @book.errors.count %>件のエラーが発生しました
+  <ul>
+    <% @book.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
+    <% end %>
+  </ul>
+<% end %>
+
+<%= form_with model: @book, url: '/books', method: :post do |f| %>
 <h4>Title</h4>
   <%= f.text_field :title %>
 
@@ -105,23 +65,7 @@
   <%= f.text_area :body %><br>
 
   <%= f.submit 'Create Book' %><br>
-
-
-<!--  <div class="field">-->
-<!--    <label for="book_title">Title</label><br>-->
-<!--    <input class="book_title" type="text" name="book[title]" id="book_title">-->
-<!--  </div>-->
-
-<!--  <div class="field">-->
-<!--    <label for="book_body">Body</label><br>-->
-<!--    <textarea class="book_body" name="book[body]" id="book_body"></textarea>-->
-<!--  </div>-->
-
-<!--  <div class="actions">-->
-<!--    <input type="submit" name="commit" value="Create Book" data-disable-with="Create Book">-->
-<!--  </div>-->
-<!--</form>-->
-
+<% end %>
 
 </body></html>
 
